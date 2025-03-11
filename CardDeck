@@ -1,0 +1,42 @@
+import java.util.*;
+public class CardDeck {
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		int n = scan.nextInt();
+		int[] frequency = new int[10001];
+		for(int k = 0; k<n; k++)
+		{ 
+			int v = scan.nextInt();
+			frequency[v]++;
+		}
+
+		boolean success = false;
+		for(int x = 2; x<=n; x++)
+		{	int count = 0; //set count back to zero
+			for(int k = 0; k<frequency.length; k++)
+			{
+				if(frequency[k]%x==0)
+				{
+					count++;
+				}
+				
+			}
+			if(count==frequency.length)
+			{
+				success = true;
+			}
+				
+		}
+		if(success ==true)
+		{
+			System.out.println("Yes");
+		}
+		else
+		{
+			System.out.print("no");
+		}	
+		scan.close();
+	}
+
+}
