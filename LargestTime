@@ -1,0 +1,63 @@
+import java.util.*;
+
+public class largestTime {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read the four digits
+        int[] digits = new int[4];
+        for (int i = 0; i < 4; i++) {
+            digits[i] = scanner.nextInt();
+        }
+
+        String latestTime = findLatestTime(digits); 
+        System.out.println(latestTime);
+    }
+
+    public static String findLatestTime(int[] digits) {
+        // Generate all permutations of the digits
+        List<String> permutations = new ArrayList<>();
+        permute(digits, 0, permutations); //calls function below 
+
+        String latestTime = "None";
+        int maxMinutes = -1;
+
+        for (String perm : permutations) {
+            int hours = Integer.parseInt(perm.substring(0, 2));
+            int minutes = Integer.parseInt(perm.substring(2, 4));
+
+            if (hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60) {
+                int totalMinutes = hours * 60 + minutes;
+                if (totalMinutes > maxMinutes) {
+                    maxMinutes = totalMinutes;
+                    latestTime = String.format("%02d:%02d", hours, minutes);
+                }
+            }
+        }
+
+        return latestTime;
+    }
+
+    private static void permute(int[] digits, int start, List<String> permutations) {
+        if (start == digits.length) {
+            StringBuilder sb = new StringBuilder(); //dont do s = s+'a', do stringbuilder because it is more efficient
+            for (int digit : digits) {
+                sb.append(digit); //adds digit to end of sb, convert to strin - append
+            }
+            permutations.add(sb.toString());
+            return;
+        }
+
+        for (int i = start; i < digits.length; i++) {
+            swap(digits, i, start); //swaps start and i positions here, start <=i
+            permute(digits, start + 1, permutations); //recursion
+            swap(digits, i, start); // Backtrack = restores the original position
+        }
+    }
+
+    private static void swap(int[] digits, int i, int j) {
+        int temp = digits[i]; //saves position i to temp
+        digits[i] = digits[j]; // i takes value of j
+        digits[j] = temp; // j takes the value of the original i
+    }
+}
